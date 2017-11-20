@@ -228,12 +228,21 @@ final class PHPTracker extends TrackerAbstract
         }
 
         $this->set_extra_context([
+            'loaded_extensions' => get_loaded_extensions(),
+            'ini' => ini_get_all(),
+            'uname' => php_uname(),
+            'apache_modules' => function_exists('apache_get_modules')
+                ? apache_get_modules()
+                : [],
+            'stream_wrappers' => stream_get_wrappers(),
+            'stream_transports' => stream_get_transports(),
+            'stream_filters' => stream_get_filters(),
             'is_cron' => defined('DOING_CRON'),
             'multisite' => is_multisite(),
+            'blog_id' => get_current_blog_id(),
             'mu_plugins' => wp_get_mu_plugins(),
             'plugins' => get_plugins(),
             'themes' => $sendingThemes,
-            'blog_id' => get_current_blog_id(),
             'active_theme' => (string) wp_get_theme(),
             'language' => get_bloginfo('language')
         ]);
