@@ -24,9 +24,3 @@ git checkout -b 64-fix-errors-not-reporting
 After pushing this to your fork you can
 [create a pull request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/)
 to contribute your changes.
-
-## Note on updating Sentry ~Raven~ JS SDK
-
-If you plan on updating the Sentry JS SDK please not we added a few lines to the
-bottom of the minified file that need to stay and also we remove the reference
-to the sourcemap.
