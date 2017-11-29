@@ -293,12 +293,6 @@ Now `sentry-integration` will load always and before all other plugins.
 updater. However enabling or disabling does nothing if the above script is
 active (since it will always be enabled).
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within WordPress Sentry
-(sentry-integration), please send an e-mail to Alex Bouma at me@alexbouma.me.
-All security vulnerabilities will be swiftly addressed.
-
 ## License
 
 The WordPress Sentry (sentry-integration) plugin is open-sourced software
