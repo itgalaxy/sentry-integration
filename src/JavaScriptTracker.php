@@ -101,7 +101,7 @@ final class JavaScriptTracker extends TrackerAbstract
         echo sprintf(
             '<script>%s</script>',
             file_get_contents(
-                plugin_dir_path(SENTRY_INTEGRATION_PLUGIN_FILE) . 'public/raven-3.20.1.min.js'
+                plugin_dir_path(SENTRY_INTEGRATION_PLUGIN_FILE) . 'public/raven.min.js'
             )
         );
 

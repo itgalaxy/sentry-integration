@@ -120,17 +120,17 @@
     },
     {
         "name": "sentry/sentry",
-        "version": "1.8.1",
-        "version_normalized": "1.8.1.0",
+        "version": "1.8.2",
+        "version_normalized": "1.8.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/getsentry/sentry-php.git",
-            "reference": "3e4bb1486cd4e09869cb3342aef374788d540f1c"
+            "reference": "3241b135120c25d6522e46246386df0ab48e13c5"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/3e4bb1486cd4e09869cb3342aef374788d540f1c",
-            "reference": "3e4bb1486cd4e09869cb3342aef374788d540f1c",
+            "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/3241b135120c25d6522e46246386df0ab48e13c5",
+            "reference": "3241b135120c25d6522e46246386df0ab48e13c5",
             "shasum": ""
         },
         "require": {
@@ -151,7 +151,7 @@
             "ext-mbstring": "*",
             "monolog/monolog": "Automatically capture Monolog events as breadcrumbs"
         },
-        "time": "2017-11-09T17:44:23+00:00",
+        "time": "2017-12-21T16:05:46+00:00",
         "bin": [
             "bin/sentry"
         ],

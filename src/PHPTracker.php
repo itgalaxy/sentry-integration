@@ -208,50 +208,6 @@ final class PHPTracker extends TrackerAbstract
         // Instantiate the client and install.
         $this->get_client()->install()->setSendCallback([$this, 'on_send_data']);
 
-        $themes = wp_get_themes([
-            'errors' => null,
-            'allowed' => null
-        ]);
-        $sendingThemes = [];
-
-        foreach ($themes as $themeName => $theme) {
-            $sendingThemes[$themeName] = [
-                'Name' => $theme->display('Name'),
-                'ThemeURI' => $theme->display('ThemeURI'),
-                'Description' => $theme->display('Description'),
-                'Author' => $theme->display('Author'),
-                'Version' => $theme->display('Version'),
-                'AuthorURI' => $theme->display('AuthorURI'),
-                'Status' => $theme->display('Status'),
-                'Tags' => $theme->display('Tags')
-            ];
-        }
-
-        $this->set_extra_context([
-            'loaded_extensions' => get_loaded_extensions(),
-            'ini' => ini_get_all(),
-            'uname' => php_uname(),
-            'apache_modules' => function_exists('apache_get_modules')
-                ? apache_get_modules()
-                : [],
-            'stream_wrappers' => stream_get_wrappers(),
-            'stream_transports' => stream_get_transports(),
-            'stream_filters' => stream_get_filters(),
-            'usage' => getrusage(),
-            'memory_usage' => memory_get_usage(),
-            'real_memory_usage' => memory_get_usage(true),
-            'memory_peak_usage' => memory_get_peak_usage(),
-            'real_memory_peak_usage' => memory_get_peak_usage(true),
-            'is_cron' => defined('DOING_CRON'),
-            'multisite' => is_multisite(),
-            'blog_id' => get_current_blog_id(),
-            'mu_plugins' => wp_get_mu_plugins(),
-            'plugins' => get_plugins(),
-            'themes' => $sendingThemes,
-            'active_theme' => (string) wp_get_theme(),
-            'language' => get_bloginfo('language')
-        ]);
-
         // After the theme was setup reset the options
         add_action('after_setup_theme', function () {
             if (has_filter('sentry_integration_options')) {
