@@ -4,11 +4,17 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit437ad47e064758a069eff5a4b7eef79f
+class ComposerStaticInitb076677c42f1a3b9647c849d14b74511
 {
-    public static $firstCharsPsr4 = array (
-        'I' => true,
-        'C' => true,
+    public static $prefixLengthsPsr4 = array (
+        'I' => 
+        array (
+            'Itgalaxy\\SentryIntegration\\' => 27,
+        ),
+        'C' => 
+        array (
+            'Composer\\Installers\\' => 20,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -35,9 +41,9 @@ class ComposerStaticInit437ad47e064758a069eff5a4b7eef79f
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->firstCharsPsr4 = ComposerStaticInit437ad47e064758a069eff5a4b7eef79f::$firstCharsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit437ad47e064758a069eff5a4b7eef79f::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit437ad47e064758a069eff5a4b7eef79f::$prefixesPsr0;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitb076677c42f1a3b9647c849d14b74511::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitb076677c42f1a3b9647c849d14b74511::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitb076677c42f1a3b9647c849d14b74511::$prefixesPsr0;
 
         }, null, ClassLoader::class);
     }
