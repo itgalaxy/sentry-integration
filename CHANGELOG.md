@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.1.0 - 2018-01-06
+
+* Added: `ExpectCTTracker` for `Expect-CT` security header.
+* Added: `XXSSProtectionTracker` for `X-XSS-Protection` security header.
+
 ## 2.0.0 - 2017-12-22
 
 * Added: `raven.min.js.map` file for debug error(s) inside `raven-js`.

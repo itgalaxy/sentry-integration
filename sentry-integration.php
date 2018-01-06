@@ -3,8 +3,8 @@
 /**
  * Plugin Name: Sentry Integration
  * Plugin URI: https://github.com/itgalaxy/sentry-integration
- * Description: A (unofficial) WordPress plugin to report PHP and JavaScript errors to Sentry.
- * Version: 1.0.0
+ * Description: A (unofficial) WordPress plugin to report PHP, JavaScript and security headers errors to Sentry.
+ * Version: 2.1.0
  * Author: Alexander Krasnoyarov
  * Author URI: https://github.com/evilebottnawi
  * License: MIT
@@ -15,8 +15,10 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
+use Itgalaxy\SentryIntegration\ExpectCTTracker;
 use Itgalaxy\SentryIntegration\JavaScriptTracker;
 use Itgalaxy\SentryIntegration\PHPTracker;
+use Itgalaxy\SentryIntegration\XXSSProtectionTracker;
 
 // If the plugin was already loaded as a mu-plugin do not load again.
 if (defined('SENTRY_INTEGRATION_MU_LOADED')) {
@@ -58,9 +60,30 @@ if (!file_exists($autoloaderPath)) {
 
 require_once $autoloaderPath;
 
+register_deactivation_hook(__FILE__, 'flush_rewrite_rules');
+register_activation_hook(__FILE__, 'flush_rewrite_rules');
+
 // Define the sentry version.
 if (!defined('SENTRY_INTEGRATION_RELEASE')) {
     define('SENTRY_INTEGRATION_RELEASE', wp_get_theme()->get('Version'));
+}
+
+// Load the Expect-CT tracker if we have a private DSN
+if (defined('SENTRY_INTEGRATION_EXPECT_CT_DSN') && !empty(SENTRY_INTEGRATION_EXPECT_CT_DSN)) {
+    add_filter('sentry_integration_expect_ct_dsn', function () {
+        return SENTRY_INTEGRATION_EXPECT_CT_DSN;
+    }, 1, 0);
+
+    ExpectCTTracker::get_instance();
+}
+
+// Load the Javascript tracker if we have a public DSN
+if (defined('SENTRY_INTEGRATION_PUBLIC_DSN') && !empty(SENTRY_INTEGRATION_PUBLIC_DSN)) {
+    add_filter('sentry_integration_public_dsn', function () {
+        return SENTRY_INTEGRATION_PUBLIC_DSN;
+    }, 1, 0);
+
+    JavaScriptTracker::get_instance();
 }
 
 // Load the PHP tracker if we have a private DSN
@@ -72,11 +95,11 @@ if (defined('SENTRY_INTEGRATION_DSN') && !empty(SENTRY_INTEGRATION_DSN)) {
     PHPTracker::get_instance();
 }
 
-// Load the Javascript tracker if we have a public DSN
-if (defined('SENTRY_INTEGRATION_PUBLIC_DSN') && !empty(SENTRY_INTEGRATION_PUBLIC_DSN)) {
-    add_filter('sentry_integration_public_dsn', function () {
-        return SENTRY_INTEGRATION_PUBLIC_DSN;
+// Load the X-XSS-Protection tracker if we have a private DSN
+if (defined('SENTRY_INTEGRATION_X_XSS_PROTECTION_DSN') && !empty(SENTRY_INTEGRATION_X_XSS_PROTECTION_DSN)) {
+    add_filter('sentry_integration_x_xss_protection_dsn', function () {
+        return SENTRY_INTEGRATION_X_XSS_PROTECTION_DSN;
     }, 1, 0);
 
-    JavaScriptTracker::get_instance();
+    XXSSProtectionTracker::get_instance();
 }

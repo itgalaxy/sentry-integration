@@ -2,13 +2,14 @@
 
 A (unofficial)
 [WordPress plugin](https://wordpress.org/plugins/sentry-integration/) to report
-PHP and JavaScript errors to [Sentry](https://sentry.io).
+PHP, JavaScript and security headers (Expect-CT and X-XSS-Protection) errors
+to [Sentry](https://sentry.io).
 
-## What?
+## Introduction
 
-This plugin can report PHP errors (optionally) and JavaScript errors
-(optionally) to [Sentry](https://sentry.io) and integrates with its release
-tracking.
+This plugin can report PHP errors (optionally), JavaScript errors
+(optionally) and security headers (Expect-CT and X-XSS-Protection) (optionally)
+to [Sentry](https://sentry.io) and integrates with its release tracking.
 
 It will auto detect authenticated users and add context where possible. All
 context/tags can be adjusted using filters mentioned below.
@@ -24,6 +25,8 @@ context/tags can be adjusted using filters mentioned below.
 interface. A DSN must be configured first.
 
 ## Configuration
+
+### PHP tracker
 
 (Optionally) track PHP errors by adding this snippet to your `wp-config.php` and
 replace `DSN` with your actual DSN that you find in Sentry:
@@ -42,19 +45,53 @@ define('SENTRY_INTEGRATION_DSN', 'DSN');
 define('SENTRY_INTEGRATION_ERROR_TYPES', E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_USER_DEPRECATED);
 ```
 
----
+### JavaScript tracker
 
 (Optionally) track JavaScript errors by adding this snippet to your
 `wp-config.php` and replace `PUBLIC_DSN` with your actual public DSN that you
 find in Sentry (**never use your private DSN**):
 
 ```php
-define('SENTRY_INTEGRATION_PUBLIC_DSN', 'PUBLIC_DSN');
+define('SENTRY_INTEGRATION_PUBLIC_DSN', 'DSN');
 ```
 
 **Note:** Do not set this constant to disable the JavaScript tracker.
 
----
+### Expect-CT header tracker
+
+(Optionally) track Expect-CT header errors by adding this snippet
+to your `wp-config.php` and replace `DSN` with your actual DSN
+that you find in Sentry:
+
+```php
+define('SENTRY_INTEGRATION_EXPECT_CT_DSN', 'DSN');
+```
+
+**Note:** Do not set this constant to disable the Expect-CT tracker.
+**Note:** You should send `Expect-CT` header
+with `report-uri="http://you-site.com/sentry-integration/expect-ct/report/"`
+using `.htaccess`, `php` or another prefer method. See
+more about [Expect-CT](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expect-CT)
+header.
+
+### X-XSS-Protection tracker
+
+(Optionally) track X-XSS-Protection header errors by adding this snippet
+to your `wp-config.php` and replace `DSN` with your actual DSN
+that you find in Sentry:
+
+```php
+define('SENTRY_INTEGRATION_X_XSS_PROTECTION_DSN', 'DSN');
+```
+
+**Note:** Do not set this constant to disable the X-XSS-Protection tracker.
+**Note:** You should send `X-XSS-Protection` header
+with `report="http://you-site.com/sentry-integration/x-xss-protection/report/"`
+using `.htaccess`, `php` or another prefer method. See
+more about [X-XSS-Protection](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection)
+header.
+
+### Common configuration for all trackers
 
 (Optionally) define a version of your site; by default the theme version will be
 used. This is used for tracking at which version of your site the error
@@ -76,14 +113,14 @@ This plugin provides the following filters to plugin/theme developers.
 
 Please note that some filters are fired when the Sentry trackers are initialized
 so they won't fire if you define them in you theme or in a plugin that loads
-after WP Sentry does.
+after Sentry Integration does.
 
-### Common to PHP & JavaScript trackers
+### Common to PHP, JavaScript and security headers trackers
 
 #### `sentry_integration_user_context` (array)
 
-You can use this filter to extend the Sentry user context for both PHP and JS
-trackers.
+You can use this filter to extend the Sentry user context for both PHP, JS and
+security headers trackers.
 
 > **WARNING:** These values are exposed to the public in the JS tracker, so make
 > sure you do not expose anything private!
@@ -132,8 +169,8 @@ function customize_sentry_dsn($dsn) {
 add_filter('sentry_integration_dsn', 'customize_sentry_dsn');
 ```
 
-**Note:** _This filter fires on when WP Sentry initializes and after the WP
-`after_setup_theme`._
+**Note:** _This filter fires on when Sentry Integration initializes and after
+the WP `after_setup_theme`._
 
 ---
 
@@ -163,8 +200,8 @@ function customize_sentry_options(array $options) {
 add_filter('sentry_integration_options', 'customize_sentry_options');
 ```
 
-**Note:** _This filter fires on when WP Sentry initializes and after the WP
-`after_setup_theme`._
+**Note:** _This filter fires on when Sentry Integration initializes and after
+the WP `after_setup_theme`._
 
 ---
 
@@ -253,6 +290,182 @@ function customize_public_sentry_options(array $options) {
 add_filter('sentry_integration_public_options', 'customize_sentry_public_options');
 ```
 
+### Specific to Expect-CT tracker:
+
+#### `sentry_integration_expect_ct_dsn` (string)
+
+You can use this filter to override the Sentry DSN used for the
+Expect-CT tracker.
+
+Example usage:
+
+```php
+/**
+ * Customize sentry dsn.
+ *
+ * @param string $dsn The current sentry public dsn.
+ *
+ * @return string
+ */
+function customize_sentry_dsn($dsn) {
+    return 'https://<key>:<secret>@sentry.io/<project>';
+}
+
+add_filter('sentry_integration_expect_ct_dsn', 'customize_sentry_dsn');
+```
+
+**Note:** _This filter fires on when Sentry Integration initializes and after
+the WP `after_setup_theme`._
+
+---
+
+#### `sentry_integration_expect_ct_options` (array)
+
+You can use this filter to customize the Sentry options used to initialize the
+Expect-CT tracker.
+
+Example usage:
+
+```php
+/**
+ * Customize sentry options.
+ *
+ * @param array $options The current sentry options.
+ *
+ * @return array
+ */
+function customize_sentry_options(array $options) {
+    return array_merge($options, array(
+        'tags' => array(
+            'my-custom-tag' => 'custom value',
+        ),
+    ));
+}
+
+add_filter('sentry_integration_expect_ct_options', 'customize_sentry_options');
+```
+
+**Note:** _This filter fires on when Sentry Integration initializes and after
+the WP `after_setup_theme`._
+
+---
+
+#### `sentry_integration_expect_ct_send_data` (array|bool)
+
+Provide a function which will be called before Sentry Expect-CT tracker
+sends any data, allowing you both to mutate that data, as well as prevent
+it from being sent to the server.
+
+Example usage:
+
+```php
+/**
+ * Customize sentry send data.
+ *
+ * @param array $data The sentry send data.
+ *
+ * @return array|bool Return the data array or false to cancel the send operation.
+ */
+function filter_sentry_send_data(array $data) {
+    $data['tags']['my_custom_key'] = 'my_custom_value';
+
+    return $data;
+}
+
+add_filter('sentry_integration_expect_ct_send_data', 'filter_sentry_send_data');
+```
+
+**Note:** _This filter fires whenever the Sentry SDK is sending data to the
+Sentry server._
+
+### Specific to X-XSS-Protection tracker:
+
+#### `sentry_integration_x_xss_protection_dsn` (string)
+
+You can use this filter to override the Sentry DSN used for the
+X-XSS-Protection tracker.
+
+Example usage:
+
+```php
+/**
+ * Customize sentry dsn.
+ *
+ * @param string $dsn The current sentry public dsn.
+ *
+ * @return string
+ */
+function customize_sentry_dsn($dsn) {
+    return 'https://<key>:<secret>@sentry.io/<project>';
+}
+
+add_filter('sentry_integration_x_xss_protection_dsn', 'customize_sentry_dsn');
+```
+
+**Note:** _This filter fires on when Sentry Integration initializes and after
+the WP `after_setup_theme`._
+
+---
+
+#### `sentry_integration_x_xss_protection_options` (array)
+
+You can use this filter to customize the Sentry options used to initialize the
+Expect-CT tracker.
+
+Example usage:
+
+```php
+/**
+ * Customize sentry options.
+ *
+ * @param array $options The current sentry options.
+ *
+ * @return array
+ */
+function customize_sentry_options(array $options) {
+    return array_merge($options, array(
+        'tags' => array(
+            'my-custom-tag' => 'custom value',
+        ),
+    ));
+}
+
+add_filter('sentry_integration_x_xss_protection_options', 'customize_sentry_options');
+```
+
+**Note:** _This filter fires on when Sentry Integration initializes and after
+the WP `after_setup_theme`._
+
+---
+
+#### `sentry_integration_x_xss_protection_send_data` (array|bool)
+
+Provide a function which will be called before Sentry Expect-CT tracker
+sends any data, allowing you both to mutate that data, as well as prevent
+it from being sent to the server.
+
+Example usage:
+
+```php
+/**
+ * Customize sentry send data.
+ *
+ * @param array $data The sentry send data.
+ *
+ * @return array|bool Return the data array or false to cancel the send operation.
+ */
+function filter_sentry_send_data(array $data) {
+    $data['tags']['my_custom_key'] = 'my_custom_value';
+
+    return $data;
+}
+
+add_filter('sentry_integration_x_xss_protection_send_data', 'filter_sentry_send_data');
+```
+
+**Note:** _This filter fires whenever the Sentry SDK is sending data to the
+Sentry server._
+
 ## Catching plugin errors
 
 Since this plugin is called `sentry-integration` it loads a bit late which could
@@ -268,7 +481,7 @@ directory does not exists you must create that too).
 /**
  * Plugin Name: Sentry Integration
  * Plugin URI: https://github.com/itgalaxy/sentry-integration
- * Description: A (unofficial) WordPress plugin to report PHP and JavaScript errors to Sentry.
+ * Description: A (unofficial) WordPress plugin to report PHP and JavaScript and security headers errors to Sentry.
  * Version: must-use-proxy
  * Author: Alexander Krasnoyarov
  * Author URI: https://github.com/evilebottnawi
