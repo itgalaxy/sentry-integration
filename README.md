@@ -1,5 +1,11 @@
 # [Sentry Integration](https://wordpress.org/plugins/sentry-integration/)
 
+[![Latest Stable Version](https://poser.pugx.org/itgalaxy/sentry-integration/v/stable)](https://packagist.org/packages/itgalaxy/sentry-integration)
+[![Total Downloads](https://poser.pugx.org/itgalaxy/sentry-integration/downloads)](https://packagist.org/packages/itgalaxy/sentry-integration)
+[![Latest Unstable Version](https://poser.pugx.org/itgalaxy/sentry-integration/v/unstable)](https://packagist.org/packages/itgalaxy/sentry-integration)
+[![License](https://poser.pugx.org/itgalaxy/sentry-integration/license)](https://packagist.org/packages/itgalaxy/sentry-integration)
+[![composer.lock](https://poser.pugx.org/itgalaxy/sentry-integration/composerlock)](https://packagist.org/packages/itgalaxy/sentry-integration)
+
 A (unofficial)
 [WordPress plugin](https://wordpress.org/plugins/sentry-integration/) to report
 PHP, JavaScript and security headers (Expect-CT and X-XSS-Protection) errors
@@ -508,5 +514,5 @@ active (since it will always be enabled).
 
 ## License
 
-The WordPress Sentry (sentry-integration) plugin is open-sourced software
+Sentry Integration plugin is open-sourced software
 licensed under the [MIT license](http://opensource.org/licenses/MIT).
