@@ -4,7 +4,7 @@
  * Plugin Name: Sentry Integration
  * Plugin URI: https://github.com/itgalaxy/sentry-integration
  * Description: A (unofficial) WordPress plugin to report PHP, JavaScript and security headers errors to Sentry.
- * Version: 2.1.0
+ * Version: 2.1.1
  * Author: Alexander Krasnoyarov
  * Author URI: https://github.com/evilebottnawi
  * License: MIT
