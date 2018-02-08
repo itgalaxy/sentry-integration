@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.1.2 - 2018-02-08
+
+* Chore: update `sentry/sentry` to `1.8.3` version.
+
 ## 2.1.1 - 2018-01-17
 
 * Chore: update `raven-js` to `3.22.1` version.

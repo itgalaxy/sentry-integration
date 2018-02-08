@@ -16,7 +16,7 @@
 
 class Raven_Client
 {
-    const VERSION = '1.8.2';
+    const VERSION = '1.8.3';
 
     const PROTOCOL = '6';
 
@@ -924,6 +924,9 @@ class Raven_Client
         }
         if (!empty($data['contexts'])) {
             $data['contexts'] = $this->serializer->serialize($data['contexts'], 5);
+        }
+        if (!empty($data['breadcrumbs'])) {
+            $data['breadcrumbs'] = $this->serializer->serialize($data['breadcrumbs'], 5);
         }
     }
 
