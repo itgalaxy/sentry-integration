@@ -98,20 +98,26 @@ final class JavaScriptTracker extends TrackerAbstract
      */
     public function on_enqueue_scripts()
     {
-        echo sprintf(
-            '<script>%s</script>',
-            file_get_contents(
-                plugin_dir_path(SENTRY_INTEGRATION_PLUGIN_FILE) . 'public/raven.min.js'
-            )
+        $scriptData = file_get_contents(
+            plugin_dir_path(SENTRY_INTEGRATION_PLUGIN_FILE) . 'public/raven.min.js'
         );
 
         echo sprintf(
-            '<script>Raven.config("'
+            '<script>%s</script>',
+            $scriptData
+        );
+
+        $configData = '<script>Raven.config("'
             . $this->get_dsn()
             . '",'
             . wp_json_encode($this->get_options())
-            . ').install();</script>'
-        );
+            . ').install();</script>';
+
+        // echo base64_encode(hash("sha512", $scriptData, true));
+        // $scriptNonce = "EB3Mqe84XDrGlWSfUX26VbP51apt6Cn00w22kJlF0kY4IL+Il0xRLr6FPIgMHv9XjXYTmGxdGzeok1B77jbFeQ==";
+        // $configNonce = base64_encode(hash("sha512", $configData, true));
+
+        echo sprintf($configData);
     }
 
     /**
