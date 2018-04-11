@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.1.9 - 2018-04-11
+
+* Chore: update `raven-js` to `3.24.1` version.
+
 ## 2.1.8 - 2018-03-28
 
 * Chore: update `raven-js` to `3.24.0` version.
