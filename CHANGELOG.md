@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.2.0 - 2018-04-24
+
+* Fixed: don't include source map in inlined `raven-js` script. 
+* Fixed: optimize `composer` autoloader. 
+* Feature: add `SENTRY_INTEGRATION_PUBLIC_DSN_ENQUEUE_MODE` constant to control how register and enqueue `sentry` JavaScript file.
+* Chore: update `raven-js` to `3.24.2` version.
+* Chore: implement `Makefile.js` and `npm run build` script for easy release project.
+
 ## 2.1.9 - 2018-04-11
 
 * Chore: update `raven-js` to `3.24.1` version.

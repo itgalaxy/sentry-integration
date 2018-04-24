@@ -34,18 +34,19 @@ interface. A DSN must be configured first.
 
 ### PHP tracker
 
-(Optionally) track PHP errors by adding this snippet to your `wp-config.php` and
-replace `DSN` with your actual DSN that you find in Sentry:
+Track PHP errors by adding this snippet to your `wp-config.php` and
+replace `ADDRESS_YOUR_DSN` with your actual DSN that you find in Sentry:
 
 ```php
-define('SENTRY_INTEGRATION_DSN', 'DSN');
+define('SENTRY_INTEGRATION_DSN', 'ADDRESS_YOUR_DSN');
+// Example `ADDRESS_YOUR_DSN` value - https://1fbf25e90f114a3d83a19aa4fa432dcf:3c13a039710e4287900bc71552b1e268@sentry.io/1
 ```
 
 **Note:** Do not set this constant to disable the PHP tracker.
 
 ---
 
-(Optionally) set the error types the PHP tracker will track:
+**(Optionally)** Set the error types the PHP tracker will track:
 
 ```php
 define('SENTRY_INTEGRATION_ERROR_TYPES', E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_USER_DEPRECATED);
@@ -53,24 +54,39 @@ define('SENTRY_INTEGRATION_ERROR_TYPES', E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_
 
 ### JavaScript tracker
 
-(Optionally) track JavaScript errors by adding this snippet to your
-`wp-config.php` and replace `PUBLIC_DSN` with your actual public DSN that you
+Track JavaScript errors by adding this snippet to your
+`wp-config.php` and replace `PUBLIC_ADDRESS_YOUR_DSN` with your actual public DSN that you
 find in Sentry (**never use your private DSN**):
 
 ```php
-define('SENTRY_INTEGRATION_PUBLIC_DSN', 'DSN');
+define('SENTRY_INTEGRATION_PUBLIC_DSN', 'PUBLIC_ADDRESS_YOUR_DSN');
+// Example `PUBLIC_ADDRESS_YOUR_DSN` value - https://1fbf25e90f114a3d83a19aa4fa432dcf@sentry.io/1
 ```
 
 **Note:** Do not set this constant to disable the JavaScript tracker.
 
+---
+
+**(Optionally)** You can control how plugin should register and enqueue `sentry` JavaScript script (i.e. `raven.min.js`):
+
+```php
+define('SENTRY_INTEGRATION_PUBLIC_DSN_ENQUEUE_MODE', 'manual');
+```
+
+There are 3 values for `SENTRY_INTEGRATION_PUBLIC_DSN_ENQUEUE_MODE` constant.
+1. `inline` (**by default** for better performance and avoid problems with order scripts from other plugins/themes) - print inline script and configuration in `head` html tag.
+2. `standard` - use standard `WordPress` api for scripts (i.e. using `wp_register_script`, `wp_enqueue_script` and `wp_add_inline_script` functions on `wp_enqueue_scripts`, `login_enqueue_scripts` and `admin_enqueue_scripts` actions).
+3. `manual` - don't register and enqueue script and configuration. You should manually register and enqueue `sentry` JavaScript script with configuration.
+
 ### Expect-CT header tracker
 
-(Optionally) track Expect-CT header errors by adding this snippet
-to your `wp-config.php` and replace `DSN` with your actual DSN
+Track Expect-CT header errors by adding this snippet
+to your `wp-config.php` and replace `ADDRESS_YOUR_DSN` with your actual DSN
 that you find in Sentry:
 
 ```php
-define('SENTRY_INTEGRATION_EXPECT_CT_DSN', 'DSN');
+define('SENTRY_INTEGRATION_EXPECT_CT_DSN', 'ADDRESS_YOUR_DSN');
+// Example `ADDRESS_YOUR_DSN` value - https://1fbf25e90f114a3d83a19aa4fa432dcf@sentry.io/1
 ```
 
 **Note:** Do not set this constant to disable the Expect-CT tracker.
@@ -82,12 +98,13 @@ header.
 
 ### X-XSS-Protection tracker
 
-(Optionally) track X-XSS-Protection header errors by adding this snippet
-to your `wp-config.php` and replace `DSN` with your actual DSN
+Track X-XSS-Protection header errors by adding this snippet
+to your `wp-config.php` and replace `ADDRESS_YOUR_DSN` with your actual DSN
 that you find in Sentry:
 
 ```php
-define('SENTRY_INTEGRATION_X_XSS_PROTECTION_DSN', 'DSN');
+define('SENTRY_INTEGRATION_X_XSS_PROTECTION_DSN', 'ADDRESS_YOUR_DSN');
+// Example `ADDRESS_YOUR_DSN` value - https://1fbf25e90f114a3d83a19aa4fa432dcf@sentry.io/1
 ```
 
 **Note:** Do not set this constant to disable the X-XSS-Protection tracker.
@@ -99,7 +116,7 @@ header.
 
 ### Common configuration for all trackers
 
-(Optionally) define a version of your site; by default the theme version will be
+**(Optionally)** Define a version of your site; by default the theme version will be
 used. This is used for tracking at which version of your site the error
 occurred. When combined with release tracking this is a very powerful feature.
 
@@ -107,11 +124,14 @@ occurred. When combined with release tracking this is a very powerful feature.
 define('SENTRY_INTEGRATION_VERSION', 'v2.1.3');
 ```
 
-(Optionally) define an environment of your site. Defaults to `unspecified`.
+**(Optionally)** Define an environment of your site. Defaults to `unspecified`.
 
 ```php
 define('SENTRY_INTEGRATION_ENV', 'production');
 ```
+
+**Note:** By default `SENTRY_INTEGRATION_VERSION` constant 
+contains `wp_get_theme()->get('Version')` result. 
 
 ## Filters
 
@@ -121,7 +141,7 @@ Please note that some filters are fired when the Sentry trackers are initialized
 so they won't fire if you define them in you theme or in a plugin that loads
 after Sentry Integration does.
 
-### Common to PHP, JavaScript and security headers trackers
+### Common to PHP, JavaScript, Expect-CT and X-XSS-Protection trackers
 
 #### `sentry_integration_user_context` (array)
 
@@ -239,7 +259,7 @@ add_filter('sentry_integration_send_data', 'filter_sentry_send_data');
 **Note:** _This filter fires whenever the Sentry SDK is sending data to the
 Sentry server._
 
-### Specific to JS tracker
+### Specific to JavaScript tracker
 
 #### `sentry_integration_public_dsn` (string)
 

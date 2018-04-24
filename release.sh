@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Update the dependencies first so we are up-to-date
-composer update --no-dev --optimize-autoloader --no-interaction
-
 # Get the latest tag so we can show it
 GIT_LATEST="$(git describe --abbrev=0 --tags)"
 

@@ -92,46 +92,55 @@ final class JavaScriptTracker extends TrackerAbstract
     }
 
     /**
-     * Target of set_current_user action.
-     *
-     * @access private
-     */
-    public function on_enqueue_scripts()
-    {
-        $scriptData = file_get_contents(
-            plugin_dir_path(SENTRY_INTEGRATION_PLUGIN_FILE) . 'public/raven.min.js'
-        );
-
-        echo sprintf(
-            '<script>%s</script>',
-            $scriptData
-        );
-
-        $configData = '<script>Raven.config("'
-            . $this->get_dsn()
-            . '",'
-            . wp_json_encode($this->get_options())
-            . ').install();</script>';
-
-        // echo base64_encode(hash("sha512", $scriptData, true));
-        // $scriptNonce = "EB3Mqe84XDrGlWSfUX26VbP51apt6Cn00w22kJlF0kY4IL+Il0xRLr6FPIgMHv9XjXYTmGxdGzeok1B77jbFeQ==";
-        // $configNonce = base64_encode(hash("sha512", $configData, true));
-
-        echo sprintf($configData);
-    }
-
-    /**
      * {@inheritDoc}
      */
     protected function bootstrap()
     {
-        // Register on front-end using the highest priority.
-        add_action('wp_head', [$this, 'on_enqueue_scripts'], 0, 1);
+        $enqueueMode = SENTRY_INTEGRATION_PUBLIC_DSN_ENQUEUE_MODE;
 
-        // Register on admin using the highest priority.
-        add_action('admin_head', [$this, 'on_enqueue_scripts'], 0, 1);
+        if ($enqueueMode === 'manual') {
+            return;
+        }
 
-        // Register on login using the highest priority.
-        add_action('login_head', [$this, 'on_enqueue_scripts'], 0, 1);
+        $config = 'Raven.config("'
+            . $this->get_dsn()
+            . '",'
+            . wp_json_encode($this->get_options())
+            . ').install();';
+
+        if ($enqueueMode === 'inline') {
+            $loader = function () use ($config) {
+                $src = plugin_dir_path(SENTRY_INTEGRATION_PLUGIN_FILE) . 'public/raven.min.js';
+                $scriptData = file_get_contents($src);
+
+                echo sprintf('<script>%s</script>', $scriptData);
+
+                // echo base64_encode(hash("sha512", $scriptData, true));
+                // $scriptNonce = "EB3Mqe84XDrGlWSfUX26VbP51apt6Cn00w22kJlF0kY4IL+Il0xRLr6FPIgMHv9XjXYTmGxdGzeok1B77jbFeQ==";
+                // $configNonce = base64_encode(hash("sha512", $configData, true));
+
+                echo sprintf('<script>' . $config . '</script>');
+            };
+
+            add_action('wp_head', $loader, 0, 1);
+            add_action('admin_head', $loader, 0, 1);
+            add_action('login_head', $loader, 0, 1);
+
+            return;
+        }
+
+        if ($enqueueMode === 'standard') {
+            $loader = function () use ($config) {
+                $src = plugin_dir_path(SENTRY_INTEGRATION_PLUGIN_FILE) . 'public/raven-hidden-source-map.min.js';
+
+                wp_register_script('sentry-integration-java-script-tracker', $src);
+                wp_enqueue_script('sentry-integration-java-script-tracker');
+                wp_add_inline_script('sentry-integration-java-script-tracker', $config);
+            };
+
+            add_action('wp_enqueue_scripts', $loader, 0, 1);
+            add_action('login_enqueue_scripts', $loader, 0, 1);
+            add_action('admin_enqueue_scripts', $loader, 0, 1);
+        }
     }
 }

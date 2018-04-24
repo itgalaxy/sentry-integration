@@ -1,0 +1,41 @@
+{
+  "name": "sentry-integration",
+  "version": "2.2.0",
+  "description": "sentry-integration",
+  "keywords": [
+    "sentry"
+  ],
+  "homepage": "https://github.com/itgalaxy/sentry-integration",
+  "bugs": {
+    "url": "https://github.com/itgalaxy/sentry-integration",
+    "email": "development@itgalaxy.company"
+  },
+  "license": "MIT",
+  "author": "itgalaxy <development@itgalaxy.company>",
+  "contributors": [
+    {
+      "name": "Alexander Krasnoyarov",
+      "email": "sheo13666q@gmail.com",
+      "url": "https://github.com/evilebottnawi"
+    }
+  ],
+  "files": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/itgalaxy/sentry-integration.git"
+  },
+  "scripts": {
+    "build": "node Makefile.js"
+  },
+  "devDependencies": {
+    "through": "^2.3.8",
+    "del": "^3.0.0",
+    "execa": "^0.10.0",
+    "pify": "^3.0.0",
+    "raven-js": "3.24.2"
+  },
+  "engines": {
+    "node": ">= 8.9",
+    "npm": ">= 5.5"
+  }
+}

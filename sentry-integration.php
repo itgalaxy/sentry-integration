@@ -77,6 +77,10 @@ if (defined('SENTRY_INTEGRATION_EXPECT_CT_DSN') && !empty(SENTRY_INTEGRATION_EXP
     ExpectCTTracker::get_instance();
 }
 
+if (!defined('SENTRY_INTEGRATION_PUBLIC_DSN_ENQUEUE_MODE')) {
+    define('SENTRY_INTEGRATION_PUBLIC_DSN_ENQUEUE_MODE', 'inline');
+}
+
 // Load the Javascript tracker if we have a public DSN
 if (defined('SENTRY_INTEGRATION_PUBLIC_DSN') && !empty(SENTRY_INTEGRATION_PUBLIC_DSN)) {
     add_filter('sentry_integration_public_dsn', function () {
