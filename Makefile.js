@@ -51,7 +51,13 @@ Promise.resolve()
     fs.createReadStream(path.join(ravenJSPathDist, "raven.min.js"))
       .pipe(through(
         function write(buf) {
-          this.emit('data', buf.toString().replace("//# sourceMappingURL=raven.min.js.map", ""));
+          this.emit(
+            'data',
+            buf
+              .toString()
+              .replace("//# sourceMappingURL=raven.min.js.map", "")
+              .trim()
+          );
         },
         function end() {
           this.emit('end');
