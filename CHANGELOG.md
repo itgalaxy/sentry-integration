@@ -4,7 +4,11 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## 2.2.0 - 2018-04-24
+## 2.2.1 - 2018-04-25
+
+* Fixed: regression around import scripts for `SENTRY_INTEGRATION_PUBLIC_DSN_ENQUEUE_MODE`. 
+
+## 2.2.0 - 2018-04-25
 
 * Fixed: don't include source map in inlined `raven-js` script. 
 * Fixed: optimize `composer` autoloader. 
