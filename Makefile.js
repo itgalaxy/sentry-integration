@@ -4,13 +4,13 @@ const del = require("del");
 const path = require("path");
 const fs = require("fs");
 const execa = require("execa");
-const pify = require("pify");
 const through = require('through');
 
 const publicPath = path.join(__dirname, "public");
 const nodeModulesPath = path.join(__dirname, "node_modules");
 const ravenJSPathDist = path.join(nodeModulesPath, "raven-js/dist");
-const sourceMapComment =
+
+// Update package json version field also
 
 Promise.resolve()
   .then(() => del([`${publicPath}/**/*`]))

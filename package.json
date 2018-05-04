@@ -1,6 +1,6 @@
 {
   "name": "sentry-integration",
-  "version": "2.2.0",
+  "version": "2.2.3",
   "description": "sentry-integration",
   "keywords": [
     "sentry"
@@ -31,7 +31,6 @@
     "through": "^2.3.8",
     "del": "^3.0.0",
     "execa": "^0.10.0",
-    "pify": "^3.0.0",
     "raven-js": "3.24.2"
   },
   "engines": {

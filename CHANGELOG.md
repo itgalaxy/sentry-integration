@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.2.3 - 2018-05-04
+
+* Chore: update `sentry/sentry` to `1.9.0` version.
+
 ## 2.2.2 - 2018-04-25
 
 * Fixed: remove EOL in `inline` raven script. 
