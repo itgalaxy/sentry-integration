@@ -1,6 +1,6 @@
 {
   "name": "sentry-integration",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "description": "sentry-integration",
   "keywords": [
     "sentry"
@@ -28,10 +28,10 @@
     "build": "node Makefile.js"
   },
   "devDependencies": {
-    "through": "^2.3.8",
     "del": "^3.0.0",
     "execa": "^0.10.0",
-    "raven-js": "3.24.2"
+    "raven-js": "3.26.3",
+    "through": "^2.3.8"
   },
   "engines": {
     "node": ">= 8.9",
