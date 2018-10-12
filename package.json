@@ -29,8 +29,8 @@
   },
   "devDependencies": {
     "del": "^3.0.0",
-    "execa": "^0.10.0",
-    "raven-js": "3.26.4",
+    "execa": "^1.0.0",
+    "raven-js": "3.27.0",
     "through": "^2.3.8"
   },
   "engines": {
