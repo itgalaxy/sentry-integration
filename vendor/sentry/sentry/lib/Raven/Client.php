@@ -16,7 +16,7 @@
 
 class Raven_Client
 {
-    const VERSION = '1.9.2';
+    const VERSION = '1.10.0';
 
     const PROTOCOL = '6';
 
@@ -135,6 +135,11 @@ class Raven_Client
      */
     public $useCompression;
 
+    /**
+     * @var Raven_TransactionStack
+     */
+    public $transaction;
+
     public function __construct($options_or_dsn = null, $options = array())
     {
         if (is_array($options_or_dsn)) {
@@ -179,7 +184,7 @@ class Raven_Client
         $this->send_callback = Raven_Util::get($options, 'send_callback', null);
         $this->curl_method = Raven_Util::get($options, 'curl_method', 'sync');
         $this->curl_path = Raven_Util::get($options, 'curl_path', 'curl');
-        $this->curl_ipv4 = Raven_Util::get($options, 'curl_ipv4', true);
+        $this->curl_ipv4 = Raven_Util::get($options, 'curl_ipv4', false);
         $this->ca_cert = Raven_Util::get($options, 'ca_cert', static::get_default_ca_cert());
         $this->verify_ssl = Raven_Util::get($options, 'verify_ssl', true);
         $this->curl_ssl_version = Raven_Util::get($options, 'curl_ssl_version');
@@ -929,7 +934,11 @@ class Raven_Client
         $this->process($data);
 
         if (!$this->store_errors_for_bulk_send) {
-            $this->send($data);
+            if ($this->send($data) === false) {
+                $this->_last_event_id = null;
+
+                return null;
+            }
         } else {
             $this->_pending_events[] = $data;
         }
@@ -1027,21 +1036,20 @@ class Raven_Client
             && call_user_func_array($this->send_callback, array(&$data)) === false
         ) {
             // if send_callback returns false, end native send
-            return;
+            return false;
         }
 
         if (!$this->server) {
-            return;
+            return false;
         }
 
         if ($this->transport) {
-            call_user_func($this->transport, $this, $data);
-            return;
+            return call_user_func($this->transport, $this, $data);
         }
 
         // should this event be sampled?
         if (rand(1, 100) / 100.0 > $this->sample_rate) {
-            return;
+            return false;
         }
 
         $message = $this->encode($data);
