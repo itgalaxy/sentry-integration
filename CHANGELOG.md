@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## HEAD
+
+- Fixed: `php5.4` compatibility.
+
 ## 2.2.9 - 2018-11-16
 
 - Chore: update `sentry/sentry` to `1.10.0` version.

@@ -77,7 +77,7 @@ if (!defined('SENTRY_INTEGRATION_RELEASE')) {
 // Load the Expect-CT tracker if we have a private DSN
 if (
     defined('SENTRY_INTEGRATION_EXPECT_CT_DSN') &&
-    !empty(SENTRY_INTEGRATION_EXPECT_CT_DSN)
+    SENTRY_INTEGRATION_EXPECT_CT_DSN
 ) {
     add_filter(
         'sentry_integration_expect_ct_dsn',
@@ -96,10 +96,7 @@ if (!defined('SENTRY_INTEGRATION_PUBLIC_DSN_ENQUEUE_MODE')) {
 }
 
 // Load the Javascript tracker if we have a public DSN
-if (
-    defined('SENTRY_INTEGRATION_PUBLIC_DSN') &&
-    !empty(SENTRY_INTEGRATION_PUBLIC_DSN)
-) {
+if (defined('SENTRY_INTEGRATION_PUBLIC_DSN') && SENTRY_INTEGRATION_PUBLIC_DSN) {
     add_filter(
         'sentry_integration_public_dsn',
         function () {
@@ -113,7 +110,7 @@ if (
 }
 
 // Load the PHP tracker if we have a private DSN
-if (defined('SENTRY_INTEGRATION_DSN') && !empty(SENTRY_INTEGRATION_DSN)) {
+if (defined('SENTRY_INTEGRATION_DSN') && SENTRY_INTEGRATION_DSN) {
     add_filter(
         'sentry_integration_dsn',
         function () {
@@ -129,7 +126,7 @@ if (defined('SENTRY_INTEGRATION_DSN') && !empty(SENTRY_INTEGRATION_DSN)) {
 // Load the X-XSS-Protection tracker if we have a private DSN
 if (
     defined('SENTRY_INTEGRATION_X_XSS_PROTECTION_DSN') &&
-    !empty(SENTRY_INTEGRATION_X_XSS_PROTECTION_DSN)
+    SENTRY_INTEGRATION_X_XSS_PROTECTION_DSN
 ) {
     add_filter(
         'sentry_integration_x_xss_protection_dsn',

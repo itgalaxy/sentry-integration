@@ -145,3 +145,8 @@ stats*.json
 # Composer
 composer.phar
 !composer.lock
+vendor
+!vendor/bin
+!vendor/composer
+!vendor/sentry
+!vendor/autoload.php
