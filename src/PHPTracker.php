@@ -1,4 +1,5 @@
 <?php
+
 namespace Itgalaxy\SentryIntegration;
 
 /**
@@ -28,7 +29,7 @@ final class PHPTracker extends TrackerAbstract
      */
     public static function get_instance()
     {
-        return self::$instance ?: self::$instance = new self();
+        return self::$instance ?: (self::$instance = new self());
     }
 
     /**
@@ -68,7 +69,7 @@ final class PHPTracker extends TrackerAbstract
                 $this->get_options(),
                 \Raven_Client::parseDSN($dsn)
             );
-            $client  = $this->get_client();
+            $client = $this->get_client();
 
             foreach ($options as $key => $value) {
                 $client->$key = $value;
@@ -116,7 +117,9 @@ final class PHPTracker extends TrackerAbstract
 
         $options = [
             'release' => SENTRY_INTEGRATION_RELEASE,
-            'environment' => defined('SENTRY_INTEGRATION_ENV') ? SENTRY_INTEGRATION_ENV : 'unspecified',
+            'environment' => defined('SENTRY_INTEGRATION_ENV')
+                ? SENTRY_INTEGRATION_ENV
+                : 'unspecified',
             'tags' => [
                 'php' => phpversion(),
                 'mysql' => $wpdb->db_version(),
@@ -138,10 +141,11 @@ final class PHPTracker extends TrackerAbstract
      */
     public function get_client()
     {
-        return $this->client ?: $this->client = new \Raven_Client(
-            $this->get_dsn(),
-            $this->get_options()
-        );
+        return $this->client ?:
+            ($this->client = new \Raven_Client(
+                $this->get_dsn(),
+                $this->get_options()
+            ));
     }
 
     /**
@@ -206,7 +210,9 @@ final class PHPTracker extends TrackerAbstract
     protected function bootstrap()
     {
         // Instantiate the client and install.
-        $this->get_client()->install()->setSendCallback([$this, 'on_send_data']);
+        $this->get_client()
+            ->install()
+            ->setSendCallback([$this, 'on_send_data']);
 
         // After the theme was setup reset the options
         add_action('after_setup_theme', function () {

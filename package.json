@@ -25,13 +25,20 @@
     "url": "https://github.com/itgalaxy/sentry-integration.git"
   },
   "scripts": {
+    "lint:prettier": "prettier --list-different '*.{php,js,md}' 'src/**/*.{php,js,md}'",
+    "lint": "npm-run-all -l -p lint:**",
+    "prettify": "npm run lint:prettier -- --write",
+    "fix": "npm-run-all -l prettify -p 'fix:**'",
     "build": "node Makefile.js"
   },
   "devDependencies": {
+    "@prettier/plugin-php": "^0.10.0",
     "del": "^3.0.0",
     "execa": "^1.0.0",
+    "npm-run-all": "^4.1.5",
     "raven-js": "3.27.0",
-    "through": "^2.3.8"
+    "through": "^2.3.8",
+    "prettier": "^1.16.4"
   },
   "engines": {
     "node": ">= 8.9",

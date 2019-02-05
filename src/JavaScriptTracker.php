@@ -1,4 +1,5 @@
 <?php
+
 namespace Itgalaxy\SentryIntegration;
 
 /**
@@ -21,7 +22,7 @@ final class JavaScriptTracker extends TrackerAbstract
      */
     public static function get_instance()
     {
-        return self::$instance ?: self::$instance = new self();
+        return self::$instance ?: (self::$instance = new self());
     }
 
     /**
@@ -102,15 +103,18 @@ final class JavaScriptTracker extends TrackerAbstract
             return;
         }
 
-        $config = 'Raven.config("'
-            . $this->get_dsn()
-            . '",'
-            . wp_json_encode($this->get_options())
-            . ').install();';
+        $config =
+            'Raven.config("' .
+            $this->get_dsn() .
+            '",' .
+            wp_json_encode($this->get_options()) .
+            ').install();';
 
         if ($enqueueMode === 'inline') {
             $loader = function () use ($config) {
-                $src = plugin_dir_path(SENTRY_INTEGRATION_PLUGIN_FILE) . 'public/raven-hidden-source-map.min.js';
+                $src =
+                    plugin_dir_path(SENTRY_INTEGRATION_PLUGIN_FILE) .
+                    'public/raven-hidden-source-map.min.js';
                 $scriptData = file_get_contents($src);
 
                 echo sprintf('<script>%s</script>', $scriptData);
@@ -131,11 +135,19 @@ final class JavaScriptTracker extends TrackerAbstract
 
         if ($enqueueMode === 'standard') {
             $loader = function () use ($config) {
-                $src = plugin_dir_path(SENTRY_INTEGRATION_PLUGIN_FILE) . 'public/raven.min.js';
+                $src =
+                    plugin_dir_path(SENTRY_INTEGRATION_PLUGIN_FILE) .
+                    'public/raven.min.js';
 
-                wp_register_script('sentry-integration-java-script-tracker', $src);
+                wp_register_script(
+                    'sentry-integration-java-script-tracker',
+                    $src
+                );
                 wp_enqueue_script('sentry-integration-java-script-tracker');
-                wp_add_inline_script('sentry-integration-java-script-tracker', $config);
+                wp_add_inline_script(
+                    'sentry-integration-java-script-tracker',
+                    $config
+                );
             };
 
             add_action('wp_enqueue_scripts', $loader, 0, 1);

@@ -1,4 +1,5 @@
 <?php
+
 namespace Itgalaxy\SentryIntegration;
 
 /**
@@ -17,18 +18,18 @@ final class ExpectCTTracker extends TrackerAbstract
     /**
      * Holds the class instance.
      *
-     * @var PHPTracker
+     * @var ExpectCTTracker
      */
     private static $instance;
 
     /**
      * Get the sentry tracker instance.
      *
-     * @return PHPTracker
+     * @return ExpectCTTracker
      */
     public static function get_instance()
     {
-        return self::$instance ?: self::$instance = new self();
+        return self::$instance ?: (self::$instance = new self());
     }
 
     /**
@@ -43,7 +44,10 @@ final class ExpectCTTracker extends TrackerAbstract
     public function on_send_data(array &$data)
     {
         if (has_filter('sentry_integration_expect_ct_send_data')) {
-            $filtered = apply_filters('sentry_integration_expect_ct_send_data', $data);
+            $filtered = apply_filters(
+                'sentry_integration_expect_ct_send_data',
+                $data
+            );
 
             if (is_array($filtered)) {
                 $data = array_merge($data, $filtered);
@@ -68,7 +72,7 @@ final class ExpectCTTracker extends TrackerAbstract
                 $this->get_options(),
                 \Raven_Client::parseDSN($dsn)
             );
-            $client  = $this->get_client();
+            $client = $this->get_client();
 
             foreach ($options as $key => $value) {
                 $client->$key = $value;
@@ -84,7 +88,10 @@ final class ExpectCTTracker extends TrackerAbstract
         $dsn = parent::get_dsn();
 
         if (has_filter('sentry_integration_expect_ct_dsn')) {
-            $dsn = (string) apply_filters('sentry_integration_expect_ct_dsn', $dsn);
+            $dsn = (string) apply_filters(
+                'sentry_integration_expect_ct_dsn',
+                $dsn
+            );
         }
 
         return $dsn;
@@ -114,7 +121,9 @@ final class ExpectCTTracker extends TrackerAbstract
     {
         $options = [
             'release' => SENTRY_INTEGRATION_RELEASE,
-            'environment' => defined('SENTRY_INTEGRATION_ENV') ? SENTRY_INTEGRATION_ENV : 'unspecified'
+            'environment' => defined('SENTRY_INTEGRATION_ENV')
+                ? SENTRY_INTEGRATION_ENV
+                : 'unspecified'
         ];
 
         return $options;
@@ -127,10 +136,11 @@ final class ExpectCTTracker extends TrackerAbstract
      */
     public function get_client()
     {
-        return $this->client ?: $this->client = new \Raven_Client(
-            $this->get_dsn(),
-            $this->get_options()
-        );
+        return $this->client ?:
+            ($this->client = new \Raven_Client(
+                $this->get_dsn(),
+                $this->get_options()
+            ));
     }
 
     /**
@@ -200,15 +210,20 @@ final class ExpectCTTracker extends TrackerAbstract
     {
         $newRewriteRules = [];
 
-        $newRewriteRules['^sentry-integration/expect-ct/report$']
-            = 'index.php?sentry-integration-expect-ct-tracker=report';
+        $newRewriteRules['^sentry-integration/expect-ct/report$'] =
+            'index.php?sentry-integration-expect-ct-tracker=report';
 
         return $newRewriteRules + $rules;
     }
 
     public function handle($query)
     {
-        if (array_key_exists('sentry-integration-expect-ct-tracker', $query->query_vars)) {
+        if (
+            array_key_exists(
+                'sentry-integration-expect-ct-tracker',
+                $query->query_vars
+            )
+        ) {
             $input = file_get_contents('php://input');
 
             if (!$input) {
@@ -224,10 +239,14 @@ final class ExpectCTTracker extends TrackerAbstract
             }
 
             $client = $this->get_client();
-            $client->captureMessage('expect-ct', [], [
-                'logger' => 'expect-ct',
-                'extra' => $report
-            ]);
+            $client->captureMessage(
+                'expect-ct',
+                [],
+                [
+                    'logger' => 'expect-ct',
+                    'extra' => $report
+                ]
+            );
 
             http_response_code(201);
             exit();
@@ -244,7 +263,9 @@ final class ExpectCTTracker extends TrackerAbstract
         add_action('parse_query', [$this, 'handle']);
 
         // Instantiate the client and install.
-        $this->get_client()->install()->setSendCallback([$this, 'on_send_data']);
+        $this->get_client()
+            ->install()
+            ->setSendCallback([$this, 'on_send_data']);
 
         // After the theme was setup reset the options
         add_action('after_setup_theme', function () {

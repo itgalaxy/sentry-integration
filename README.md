@@ -49,7 +49,10 @@ define('SENTRY_INTEGRATION_DSN', 'ADDRESS_YOUR_DSN');
 **(Optionally)** Set the error types the PHP tracker will track:
 
 ```php
-define('SENTRY_INTEGRATION_ERROR_TYPES', E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_USER_DEPRECATED);
+define(
+  'SENTRY_INTEGRATION_ERROR_TYPES',
+  E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_USER_DEPRECATED
+);
 ```
 
 ### JavaScript tracker
@@ -74,6 +77,7 @@ define('SENTRY_INTEGRATION_PUBLIC_DSN_ENQUEUE_MODE', 'manual');
 ```
 
 There are 3 values for `SENTRY_INTEGRATION_PUBLIC_DSN_ENQUEUE_MODE` constant.
+
 1. `inline` (**by default** for better performance and avoid problems with order scripts from other plugins/themes) - print inline script and configuration in `head` html tag.
 2. `standard` - use standard `WordPress` api for scripts (i.e. using `wp_register_script`, `wp_enqueue_script` and `wp_add_inline_script` functions on `wp_enqueue_scripts`, `login_enqueue_scripts` and `admin_enqueue_scripts` actions).
 3. `manual` - don't register and enqueue script and configuration. You should manually register and enqueue `sentry` JavaScript script with configuration.
@@ -130,8 +134,7 @@ define('SENTRY_INTEGRATION_VERSION', 'v2.1.3');
 define('SENTRY_INTEGRATION_ENV', 'production');
 ```
 
-**Note:** By default `SENTRY_INTEGRATION_VERSION` constant 
-contains `wp_get_theme()->get('Version')` result. 
+**Note:** By default `SENTRY_INTEGRATION_VERSION` constant contains `wp_get_theme()->get('Version')` result.
 
 ## Filters
 
@@ -161,10 +164,11 @@ Example usage:
  *
  * @return array
  */
-function customize_sentry_user_context(array $user) {
-    return array_merge( $user, array(
-        'a-custom-user-meta-key' => 'custom value',
-    ));
+function customize_sentry_user_context(array $user)
+{
+  return array_merge($user, array(
+    'a-custom-user-meta-key' => 'custom value'
+  ));
 }
 
 add_filter('sentry_integration_user_context', 'customize_sentry_user_context');
@@ -188,8 +192,9 @@ Example usage:
  *
  * @return string
  */
-function customize_sentry_dsn($dsn) {
-    return 'https://<key>:<secret>@sentry.io/<project>';
+function customize_sentry_dsn($dsn)
+{
+  return 'https://<key>:<secret>@sentry.io/<project>';
 }
 
 add_filter('sentry_integration_dsn', 'customize_sentry_dsn');
@@ -215,12 +220,13 @@ Example usage:
  *
  * @return array
  */
-function customize_sentry_options(array $options) {
-    return array_merge($options, array(
-        'tags' => array(
-            'my-custom-tag' => 'custom value',
-        ),
-    ));
+function customize_sentry_options(array $options)
+{
+  return array_merge($options, array(
+    'tags' => array(
+      'my-custom-tag' => 'custom value'
+    )
+  ));
 }
 
 add_filter('sentry_integration_options', 'customize_sentry_options');
@@ -247,10 +253,11 @@ Example usage:
  *
  * @return array|bool Return the data array or false to cancel the send operation.
  */
-function filter_sentry_send_data(array $data) {
-    $data['tags']['my_custom_key'] = 'my_custom_value';
+function filter_sentry_send_data(array $data)
+{
+  $data['tags']['my_custom_key'] = 'my_custom_value';
 
-    return $data;
+  return $data;
 }
 
 add_filter('sentry_integration_send_data', 'filter_sentry_send_data');
@@ -278,8 +285,9 @@ Example usage:
  *
  * @return string
  */
-function customize_public_sentry_dsn($dsn) {
-    return 'https://<key>@sentry.io/<project>';
+function customize_public_sentry_dsn($dsn)
+{
+  return 'https://<key>@sentry.io/<project>';
 }
 
 add_filter('sentry_integration_public_dsn', 'customize_public_sentry_dsn');
@@ -305,15 +313,19 @@ Example usage:
  *
  * @return array
  */
-function customize_public_sentry_options(array $options) {
-    return array_merge($options, array(
-        'tags' => array(
-            'custom-tag' => 'custom value',
-        )
-    ));
+function customize_public_sentry_options(array $options)
+{
+  return array_merge($options, array(
+    'tags' => array(
+      'custom-tag' => 'custom value'
+    )
+  ));
 }
 
-add_filter('sentry_integration_public_options', 'customize_sentry_public_options');
+add_filter(
+  'sentry_integration_public_options',
+  'customize_sentry_public_options'
+);
 ```
 
 ### Specific to Expect-CT tracker:
@@ -333,8 +345,9 @@ Example usage:
  *
  * @return string
  */
-function customize_sentry_dsn($dsn) {
-    return 'https://<key>:<secret>@sentry.io/<project>';
+function customize_sentry_dsn($dsn)
+{
+  return 'https://<key>:<secret>@sentry.io/<project>';
 }
 
 add_filter('sentry_integration_expect_ct_dsn', 'customize_sentry_dsn');
@@ -360,12 +373,13 @@ Example usage:
  *
  * @return array
  */
-function customize_sentry_options(array $options) {
-    return array_merge($options, array(
-        'tags' => array(
-            'my-custom-tag' => 'custom value',
-        ),
-    ));
+function customize_sentry_options(array $options)
+{
+  return array_merge($options, array(
+    'tags' => array(
+      'my-custom-tag' => 'custom value'
+    )
+  ));
 }
 
 add_filter('sentry_integration_expect_ct_options', 'customize_sentry_options');
@@ -392,10 +406,11 @@ Example usage:
  *
  * @return array|bool Return the data array or false to cancel the send operation.
  */
-function filter_sentry_send_data(array $data) {
-    $data['tags']['my_custom_key'] = 'my_custom_value';
+function filter_sentry_send_data(array $data)
+{
+  $data['tags']['my_custom_key'] = 'my_custom_value';
 
-    return $data;
+  return $data;
 }
 
 add_filter('sentry_integration_expect_ct_send_data', 'filter_sentry_send_data');
@@ -421,8 +436,9 @@ Example usage:
  *
  * @return string
  */
-function customize_sentry_dsn($dsn) {
-    return 'https://<key>:<secret>@sentry.io/<project>';
+function customize_sentry_dsn($dsn)
+{
+  return 'https://<key>:<secret>@sentry.io/<project>';
 }
 
 add_filter('sentry_integration_x_xss_protection_dsn', 'customize_sentry_dsn');
@@ -448,15 +464,19 @@ Example usage:
  *
  * @return array
  */
-function customize_sentry_options(array $options) {
-    return array_merge($options, array(
-        'tags' => array(
-            'my-custom-tag' => 'custom value',
-        ),
-    ));
+function customize_sentry_options(array $options)
+{
+  return array_merge($options, array(
+    'tags' => array(
+      'my-custom-tag' => 'custom value'
+    )
+  ));
 }
 
-add_filter('sentry_integration_x_xss_protection_options', 'customize_sentry_options');
+add_filter(
+  'sentry_integration_x_xss_protection_options',
+  'customize_sentry_options'
+);
 ```
 
 **Note:** _This filter fires on when Sentry Integration initializes and after
@@ -480,13 +500,17 @@ Example usage:
  *
  * @return array|bool Return the data array or false to cancel the send operation.
  */
-function filter_sentry_send_data(array $data) {
-    $data['tags']['my_custom_key'] = 'my_custom_value';
+function filter_sentry_send_data(array $data)
+{
+  $data['tags']['my_custom_key'] = 'my_custom_value';
 
-    return $data;
+  return $data;
 }
 
-add_filter('sentry_integration_x_xss_protection_send_data', 'filter_sentry_send_data');
+add_filter(
+  'sentry_integration_x_xss_protection_send_data',
+  'filter_sentry_send_data'
+);
 ```
 
 **Note:** _This filter fires whenever the Sentry SDK is sending data to the
@@ -514,10 +538,11 @@ directory does not exists you must create that too).
  * License: MIT
  */
 
-$sentry_integration = __DIR__ . '/../plugins/sentry-integration/sentry-integration.php';
+$sentry_integration =
+  __DIR__ . '/../plugins/sentry-integration/sentry-integration.php';
 
 if (!file_exists($sentry_integration)) {
-    return;
+  return;
 }
 
 require $sentry_integration;

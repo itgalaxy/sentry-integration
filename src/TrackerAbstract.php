@@ -1,4 +1,5 @@
 <?php
+
 namespace Itgalaxy\SentryIntegration;
 
 /**
@@ -27,8 +28,8 @@ abstract class TrackerAbstract
      * @var array
      */
     private $context = [
-        'user'  => null,
-        'tags'  => [],
+        'user' => null,
+        'tags' => [],
         'extra' => []
     ];
 

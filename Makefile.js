@@ -4,7 +4,7 @@ const del = require("del");
 const path = require("path");
 const fs = require("fs");
 const execa = require("execa");
-const through = require('through');
+const through = require("through");
 
 const publicPath = path.join(__dirname, "public");
 const nodeModulesPath = path.join(__dirname, "node_modules");
@@ -14,60 +14,73 @@ const ravenJSPathDist = path.join(nodeModulesPath, "raven-js/dist");
 
 Promise.resolve()
   .then(() => del([`${publicPath}/**/*`]))
-  .then(() => execa("npm", ["outdated", "raven-js"])
-    .catch((error) => {
+  .then(() =>
+    execa("npm", ["outdated", "raven-js"]).catch(error => {
       console.log(error.stdout);
       console.log("[npm] Update `raven-js` package.");
 
       if (error.code === 1) {
-        return execa("npm", ["install", "raven-js@latest", "--save-dev", "--save-exact"])
+        return execa("npm", [
+          "install",
+          "raven-js@latest",
+          "--save-dev",
+          "--save-exact"
+        ]);
       }
     })
   )
-  .then(() => execa("composer", ["outdated", "sentry/sentry", "--strict"])
-    .catch((error) => {
-      console.log(error.stdout);
-      console.log("[composer] Update `sentry/sentry` package.");
+  .then(() =>
+    execa("composer", ["outdated", "sentry/sentry", "--strict"]).catch(
+      error => {
+        console.log(error.stdout);
+        console.log("[composer] Update `sentry/sentry` package.");
 
-      if (error.code === 1) {
-        return execa(
-          "composer",
-          [
+        if (error.code === 1) {
+          return execa("composer", [
             "require",
             "sentry/sentry",
             "--prefer-stable",
             "--prefer-dist",
             "--no-suggest"
-          ]
-        )
+          ]);
+        }
       }
-    })
+    )
   )
   .then(() =>
-    fs.createReadStream(path.join(ravenJSPathDist, "raven.min.js"))
+    fs
+      .createReadStream(path.join(ravenJSPathDist, "raven.min.js"))
       .pipe(fs.createWriteStream(path.join(publicPath, "raven.min.js")))
   )
   .then(() =>
-    fs.createReadStream(path.join(ravenJSPathDist, "raven.min.js"))
-      .pipe(through(
-        function write(buf) {
-          this.emit(
-            'data',
-            buf
-              .toString()
-              .replace("//# sourceMappingURL=raven.min.js.map", "")
-              .trim()
-          );
-        },
-        function end() {
-          this.emit('end');
-        })
+    fs
+      .createReadStream(path.join(ravenJSPathDist, "raven.min.js"))
+      .pipe(
+        through(
+          function write(buf) {
+            this.emit(
+              "data",
+              buf
+                .toString()
+                .replace("//# sourceMappingURL=raven.min.js.map", "")
+                .trim()
+            );
+          },
+          function end() {
+            this.emit("end");
+          }
+        )
       )
-      .pipe(fs.createWriteStream(path.join(publicPath, "raven-hidden-source-map.min.js")))
+      .pipe(
+        fs.createWriteStream(
+          path.join(publicPath, "raven-hidden-source-map.min.js")
+        )
+      )
   )
   .then(() => {
-    fs.createReadStream(path.join(ravenJSPathDist, "raven.min.js.map"))
-      .pipe(fs.createWriteStream(path.join(publicPath, "raven.min.js.map")))
+    fs.createReadStream(path.join(ravenJSPathDist, "raven.min.js.map")).pipe(
+      fs.createWriteStream(path.join(publicPath, "raven.min.js.map"))
+    );
   })
   .then(() => {
     execa(
@@ -81,7 +94,7 @@ Promise.resolve()
       {
         stdio: "inherit"
       }
-    )
+    );
   })
   .catch(error => {
     console.log(error.stack); // eslint-disable-line no-console
