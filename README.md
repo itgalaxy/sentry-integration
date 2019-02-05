@@ -146,7 +146,7 @@ Please note that some filters are fired when the Sentry trackers are initialized
 so they won't fire if you define them in you theme or in a plugin that loads
 after Sentry Integration does.
 
-### Common to PHP, JavaScript, Expect-CT and X-XSS-Protection trackers
+### For PHP, JavaScript, Expect-CT and X-XSS-Protection trackers
 
 #### `sentry_integration_user_context` (array)
 
@@ -178,7 +178,7 @@ add_filter('sentry_integration_user_context', 'customize_sentry_user_context');
 
 **Note:** _This filter fires on the WordPress `set_current_user` action._
 
-### Specific to PHP tracker:
+### Specific to PHP tracker
 
 #### `sentry_integration_dsn` (string)
 
@@ -330,7 +330,7 @@ add_filter(
 );
 ```
 
-### Specific to Expect-CT tracker:
+### Specific to Expect-CT tracker
 
 #### `sentry_integration_expect_ct_dsn` (string)
 
@@ -421,7 +421,7 @@ add_filter('sentry_integration_expect_ct_send_data', 'filter_sentry_send_data');
 **Note:** _This filter fires whenever the Sentry SDK is sending data to the
 Sentry server._
 
-### Specific to X-XSS-Protection tracker:
+### Specific to X-XSS-Protection tracker
 
 #### `sentry_integration_x_xss_protection_dsn` (string)
 
