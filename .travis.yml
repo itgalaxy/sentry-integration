@@ -78,5 +78,5 @@ after_success:
   - if [[ $JOB_NAME == "coverage" ]]; then
     travis_retry wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.1.0/php-coveralls.phar;
     chmod +x php-coveralls.phar;
-    travis_retry php vendor/bin/php-coveralls -x coverage/phpunit/logs/clover.xml -o ./coverage/coverage.json -v;
+    travis_retry ./php-coveralls.phar -x coverage/phpunit/logs/clover.xml -o ./coverage/coverage.json -v;
     fi
