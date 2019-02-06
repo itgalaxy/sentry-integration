@@ -27,8 +27,6 @@ matrix:
     - <<: *test
       env: JOB_NAME=test WP_VERSION=master
     - <<: *test
-      env: JOB_NAME=test ADDITIONAL_COMPOSER_OPTIONS="--prefer-lowest"
-    - <<: *test
       env: JOB_NAME=coverage
     - <<: *test
       php: 7.2

@@ -26,29 +26,31 @@ if (defined('SENTRY_INTEGRATION_MU_LOADED')) {
 }
 
 // Resolve the sentry plugin file.
-define(
-    'SENTRY_INTEGRATION_PLUGIN_FILE',
-    call_user_func(function () {
-        global $wp_plugin_paths;
+if (!defined('SENTRY_INTEGRATION_PLUGIN_FILE')) {
+    define(
+        'SENTRY_INTEGRATION_PLUGIN_FILE',
+        call_user_func(function () {
+            global $wp_plugin_paths;
 
-        $plugin_file = __FILE__;
+            $plugin_file = __FILE__;
 
-        if (!empty($wp_plugin_paths)) {
-            $wp_plugin_real_paths = array_flip($wp_plugin_paths);
-            $plugin_path = wp_normalize_path(dirname($plugin_file));
+            if (!empty($wp_plugin_paths)) {
+                $wp_plugin_real_paths = array_flip($wp_plugin_paths);
+                $plugin_path = wp_normalize_path(dirname($plugin_file));
 
-            if (isset($wp_plugin_real_paths[$plugin_path])) {
-                $plugin_file = str_replace(
-                    $plugin_path,
-                    $wp_plugin_real_paths[$plugin_path],
-                    $plugin_file
-                );
+                if (isset($wp_plugin_real_paths[$plugin_path])) {
+                    $plugin_file = str_replace(
+                        $plugin_path,
+                        $wp_plugin_real_paths[$plugin_path],
+                        $plugin_file
+                    );
+                }
             }
-        }
 
-        return $plugin_file;
-    })
-);
+            return $plugin_file;
+        })
+    );
+}
 
 $autoloaderPath = __DIR__ . '/vendor/autoload.php';
 
