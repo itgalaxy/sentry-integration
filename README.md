@@ -1,7 +1,7 @@
 # [Sentry Integration](https://wordpress.org/plugins/sentry-integration/)
 
 [![Build Status](https://travis-ci.org/itgalaxy/sentry-integration.svg?branch=master)](https://travis-ci.org/itgalaxy/sentry-integration)
-[![Coverage Status](https://coveralls.io/repos/github/itgalaxy/sentry-integration/badge.svg?branch=ci-add-travis)](https://coveralls.io/github/itgalaxy/sentry-integration?branch=ci-add-travis)
+[![Coverage Status](https://coveralls.io/repos/github/itgalaxy/sentry-integration/badge.svg?branch=master)](https://coveralls.io/github/itgalaxy/sentry-integration?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/itgalaxy/sentry-integration/v/stable)](https://packagist.org/packages/itgalaxy/sentry-integration)
 [![Total Downloads](https://poser.pugx.org/itgalaxy/sentry-integration/downloads)](https://packagist.org/packages/itgalaxy/sentry-integration)
 [![Latest Unstable Version](https://poser.pugx.org/itgalaxy/sentry-integration/v/unstable)](https://packagist.org/packages/itgalaxy/sentry-integration)
