@@ -8,7 +8,6 @@ env:
     - WP_DB_USER=wp
     - WP_DB_PASS=password
     - WP_DB_NAME=wp_tests
-    - WP_VERSION=latest-stable
 
 matrix:
   fast_finish: true
@@ -49,7 +48,9 @@ matrix:
     - <<: *test
       php: 5.4
       env: JOB_NAME=test ADDITIONAL_COMPOSER_OPTIONS="--prefer-lowest"
-
+  allow_failures:
+    - <<: *test
+      env: JOB_NAME=test WP_VERSION=master
 cache:
   directories:
     - $HOME/.npm
@@ -68,7 +69,7 @@ before_install:
 
 install:
   - travis_retry composer update --prefer-dist --no-interaction --prefer-stable --no-suggest $ADDITIONAL_COMPOSER_OPTIONS;
-  - if [[ $WP_VERSION != "latest-stable" ]]; then
+  - if [[ -n "$WP_VERSION"  ]]; then
     cd vendor/wordpress/wordpress;
     git checkout $WP_VERSION;
     cd ../../../;
