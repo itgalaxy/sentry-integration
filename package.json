@@ -46,7 +46,7 @@
     "raven-js": "3.27.0",
     "through": "^2.3.8",
     "prettier": "^1.16.4",
-    "remark-cli": "^6.0.0",
+    "remark-cli": "^11.0.0",
     "remark-preset-lint-itgalaxy": "^14.0.0"
   },
   "engines": {
